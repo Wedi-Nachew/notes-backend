@@ -6,9 +6,6 @@ const Note = require("./models/note");
 const PORT = process.env.PORT;
 
 const password = process.argv[2];
-const url = `mongodb+srv://wedi-nachew:${password}@cluster0.or84efx.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`;
-mongoose.set("strictQuery", false);
-mongoose.connect(url);
 
 const app = express();
 app.use(express.json());
