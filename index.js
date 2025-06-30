@@ -1,5 +1,14 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const mongoose = require("mongoose");
+const Note = require("./models/note");
+const PORT = process.env.PORT;
+
+const password = process.argv[2];
+const url = `mongodb+srv://wedi-nachew:${password}@cluster0.or84efx.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`;
+mongoose.set("strictQuery", false);
+mongoose.connect(url);
 
 const app = express();
 app.use(express.json());
@@ -31,13 +40,14 @@ let notes = [
 
 app.get("/", (req, res) => res.send("<h1>Welcome to our server</h1>"));
 app.get("/api/notes/:id", (req, res) => {
-    const id = req.params.id;
-    const note = notes.find((note) => note.id === id);
-    if (note) {
-        res.json(note);
-    } else {
-        res.status(404).end();
-    }
+    Note.findById(req.params.id).then((note) => res.json(note));
+    // const id = req.params.id;
+    // const note = notes.find((note) => note.id === id);
+    // if (note) {
+    //     res.json(note);
+    // } else {
+    //     res.status(404).end();
+    // }
 });
 
 app.delete("/api/notes/:id", (req, res) => {
@@ -47,7 +57,7 @@ app.delete("/api/notes/:id", (req, res) => {
 });
 
 app.get("/api/notes", (req, res) => {
-    res.json(notes);
+    Note.find({}).then((notes) => res.json(notes));
 });
 
 const generateId = () => {
@@ -67,13 +77,10 @@ app.post("/api/notes", (req, res) => {
     const note = {
         content: body.content,
         important: body.important || false,
-        id: generateId(),
     };
-    notes = notes.concat(note);
-    res.json(note);
+    Note.save().then((savedNote) => res.json(savedNote));
 });
 
-const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

@@ -4,16 +4,22 @@
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
-        "dev": "node --watch index.js",
+        "dev": "node --watch index.js pass123",
         "test": "echo \"Error: no test specified\" && exit 1",
         "build:ui": "rm -rf dist && cd ../demo && npm run build && cp -r dist ../backend",
-        "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
+        "deploy": "npm run build:ui && git add . && git commit -m 'updated build' && git push"
     },
     "author": "Filmon Abrha",
     "license": "MIT",
     "description": "",
     "dependencies": {
         "cors": "^2.8.5",
-        "express": "^4.21.2"
+        "dotenv": "^17.0.0",
+        "express": "^4.21.2",
+        "mongoose": "^8.16.1"
+    },
+    "devDependencies": {
+        "cpy-cli": "^5.0.0",
+        "rimraf": "^5.0.5"
     }
 }
