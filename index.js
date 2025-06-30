@@ -5,8 +5,6 @@ const mongoose = require("mongoose");
 const Note = require("./models/note");
 const PORT = process.env.PORT;
 
-const password = process.argv[2];
-
 const app = express();
 app.use(express.json());
 app.use(express.static("dist"));
@@ -37,14 +35,18 @@ let notes = [
 
 app.get("/", (req, res) => res.send("<h1>Welcome to our server</h1>"));
 app.get("/api/notes/:id", (req, res) => {
+    console.log("id: ", req.params.id);
     Note.findById(req.params.id).then((note) => res.json(note));
-    // const id = req.params.id;
-    // const note = notes.find((note) => note.id === id);
-    // if (note) {
-    //     res.json(note);
-    // } else {
-    //     res.status(404).end();
-    // }
+    // .then((note) => {
+    //     if (note) {
+    //         res.json(note);
+    //     } else {
+    //         res.status(404).end();
+    //     }
+    // })
+    // .catch((error) => {
+    //     res.status(400).json({ error: "malformatted id" });
+    // });
 });
 
 app.delete("/api/notes/:id", (req, res) => {
@@ -71,11 +73,11 @@ app.post("/api/notes", (req, res) => {
         return res.status(400).json({ error: "content missing" });
     }
 
-    const note = {
+    const note = new Note({
         content: body.content,
         important: body.important || false,
-    };
-    Note.save().then((savedNote) => res.json(savedNote));
+    });
+    note.save().then((savedNote) => res.json(savedNote));
 });
 
 app.listen(PORT, () => {
