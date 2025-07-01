@@ -7,7 +7,8 @@
         "dev": "node --watch index.js pass123",
         "test": "echo \"Error: no test specified\" && exit 1",
         "build:ui": "rm -rf dist && cd ../demo && npm run build && cp -r dist ../backend",
-        "deploy": "npm run build:ui && git add . && git commit -m 'updated build' && git push"
+        "deploy:ui": "npm run build:ui && git add . && git commit -m 'updated build' && git push",
+        "deploy": "git add . && git commit -m 'updated build' && git push"
     },
     "author": "Filmon Abrha",
     "license": "MIT",
